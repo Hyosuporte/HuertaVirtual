@@ -1,6 +1,6 @@
 <?php
 class_implements('./Hortaliza.php');
-abstract class Planta{
+class Verdura{
 
     function getId(){
         return $this->id;
