@@ -20,6 +20,9 @@ document.addEventListener("DOMContentLoaded", function () {
         'data': 'vehiculo_id',
       },
       {
+        'data': 'estado',
+      },
+      {
         'data': 'acciones',
       }
     ],
@@ -55,4 +58,8 @@ function frmLogin(e) {
       }
     };
   }
+}
+
+function frmNuevoRe(){
+  $("#NuevoRepartidor").modal("show");
 }
