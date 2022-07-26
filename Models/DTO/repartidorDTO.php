@@ -1,8 +1,17 @@
 <?php 
 require('./Persona.php');
-class Repartidor extends Persona {
+class repartidorDTO extends Persona {
 
     public $id_vehiculo;
+    public $password;
+
+    public function __construct()
+    {
+        $this->email = "";
+        $this->nombre = "";
+        $this->password = "";
+        $this->id_vehiculo = "";
+    }
 
     public function setId($id)
     {
@@ -24,6 +33,11 @@ class Repartidor extends Persona {
         $this->id_vehiculo = $idVehiculo;
     }
 
+    public function setPassword($password)
+    {
+        $this->password = $password;
+    }
+
     public function getId()
     {
         return $this->id;
@@ -42,6 +56,11 @@ class Repartidor extends Persona {
     public function getIdVehiculol()
     {
         return $this->id_vehiculo;
+    }
+
+    public function getPassword()
+    {
+        return $this->password;
     }
 
 }

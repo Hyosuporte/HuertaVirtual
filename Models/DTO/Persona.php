@@ -3,7 +3,12 @@ abstract class Persona{
     public $id;
     public $nombre;
     public $email;
- 
+    
+    public function __construct()
+    {
+        
+    }
+
     abstract public function setId($objet);
     abstract public function setNombre($objet);
     abstract public function setEmail($objet);

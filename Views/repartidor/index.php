@@ -52,18 +52,22 @@
                         </div>
                     </div>
                     <div class="row">
+                        <div class="form-group">
+                            <label for="idVehiculo">ID Vehiculo</label>
+                            <input id="idVehiculo" class="form-control" type="text" name="idVehiculo">
+                        </div>
                         <div class="col-md-6">
                             <div class="form-group">
-                                <label for="idVehiculo">ID vehiculo</label>
-                                <input id="idVehiculo" class="form-control" type="text" name="idVehiculo" placeholder="ID Vehiculo">
+                                <label for="marca">Marca Vehiculo</label>
+                                <input id="marca" class="form-control" type="text" name="marca" placeholder="Marca Vehiculo">
                             </div>
                         </div>
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label for="vehiculo">Tipo Vehiculo</label>
-                                <select id="vehiculo" class="form-control" name="">
-                                    <option>Moto</option>
-                                    <option>Carro</option>
+                                <select id="vehiculo" class="form-control" name="vehiculo">
+                                    <option value="Moto">Moto</option>
+                                    <option value="Carro">Carro</option>
                                 </select>
                             </div>
                         </div>
@@ -82,7 +86,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-success">Registrar</button>
+                    <button type="button" class="btn btn-outline-success" onclick="frmRegistroRepar()">Registrar</button>
                 </form>
             </div>
         </div>

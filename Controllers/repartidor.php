@@ -38,9 +38,9 @@ class repartidor extends Controller
         $data = $this->model->getRepartidores();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge badge-succes">Activo</span>';
+                $data[$i]['estado'] = '<span class="badge bg-soft-succes">Activo</span>';
             } else {
-                $data[$i]['estado'] = '<span class="badge badge-danger">Inactivo</span>';
+                $data[$i]['estado'] = '<span class="badge bg-soft-danger">Inactivo</span>';
             }
             $data[$i]['acciones'] = '<div>
                 <button class="btn btn-primary" type="button">Editar</button>
@@ -48,6 +48,33 @@ class repartidor extends Controller
             </div>';
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
+        die();
+    }
+
+    public function registrar()
+    {
+        $email = $_POST['email'];
+        $nombre = $_POST['nombre'];
+        $password = $_POST['password'];
+        $passwordConf = $_POST['passwordConf'];
+        $idVehiculo = $_POST['idVehiculo'];
+        $marca = $_POST['marca'];
+        $tipoVehiculo = $_POST['vehiculo'];
+        $modelo = $_POST['modelo'];
+        $placa = $_POST['placa'];
+        if (empty($email) || empty($nombre) || empty($password) || empty($marca) || empty($modelo) || empty($placa) || empty($idVehiculo)) {
+            $msg = "Todos los campos son obligatorios";
+        } else if ($password != $passwordConf) {
+            $msg = "Las contraseñas deben ser iguales";
+        } else {
+            $data = $this->model->registrarRepartidor($email, $password, $nombre, $idVehiculo, $marca, $tipoVehiculo, $modelo, $placa);
+            if ($data == "correcto") {
+                $msg = "Registrado";
+            } else {
+                $msg = "No se puedo registrar al repartidor";
+            }
+        }
+        echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
 }
