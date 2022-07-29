@@ -44,28 +44,44 @@ class repartidorDAO extends Query
         $this->modelo = $modelo;
         $this->placa = $placa;
 
-        /* Insercion Vehiculo */
-        $sql = "insert into vehiculos(id, marca,modelo,placa,tipo) values (?,?,?,?,?)";
-        $datos = array(
-            $this->idVehiculo, $this->marca, $this->modelo, $this->placa, $this->tipoVehiculo
+        /* Se validad que no exista ni el vehiculo ni el repartidor */
+        $buscarVehiculo = "select * from vehiculos where id = '$this->idVehiculo'";
+        $exitsVehiculo = $this->select($buscarVehiculo);
 
-        );
-        $res = $this->save($sql, $datos);
+        $buscarRepar = "select * from vehiculos where id = '$this->idVehiculo'";
+        $exitsRepar = $this->select($buscarRepar);
 
-        if ($res == 1) {
-            /* Insercion Repartidor */
-            $sql = "insert into repartidores(nombre,email,vehiculo_id,password,estado) values (?,?,?,?,?)";
-            $data = array(
-                $this->nombre, $this->email, $this->idVehiculo, $this->password, "1"
-            );
-            $res = $this->save($sql, $data);
-            if ($res == 1) {
-                return "correcto";
-            } else {
-                return "error";
+        if (empty($exitsVehiculo)) {
+            if (empty($exitsRepar)) {
+
+                /* Insercion Vehiculo */
+                $sql = "insert into vehiculos(id, marca,modelo,placa,tipo) values (?,?,?,?,?)";
+                $datos = array(
+                    $this->idVehiculo, $this->marca, $this->modelo, $this->placa, $this->tipoVehiculo
+
+                );
+                $res = $this->save($sql, $datos);
+
+                if ($res == 1) {
+                    /* Insercion Repartidor */
+                    $sql = "insert into repartidores(nombre,email,vehiculo_id,password,estado) values (?,?,?,?,?)";
+                    $data = array(
+                        $this->nombre, $this->email, $this->idVehiculo, $this->password, "1"
+                    );
+                    $res = $this->save($sql, $data);
+                    if ($res == 1) {
+                        return "correcto";
+                    } else {
+                        return "error";
+                    }
+                } else {
+                    return "error";
+                }
+            }else{
+                return "Ya existe el repartidor";
             }
         } else {
-            return "error";
+            return "Ya existe el vehiculo";
         }
     }
 }

@@ -71,7 +71,7 @@ class repartidor extends Controller
             if ($data == "correcto") {
                 $msg = "Registrado";
             } else {
-                $msg = "No se puedo registrar al repartidor";
+                $msg = $data;
             }
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);

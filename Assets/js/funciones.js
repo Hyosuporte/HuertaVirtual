@@ -109,7 +109,7 @@ function frmRegistroRepar(e) {
     http.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         const res = JSON.parse(this.responseText);
-        if(res == "Registrado"){
+        if (res == "Registrado") {
           Swal.fire({
             position: "top-end",
             icon: "success",
@@ -119,7 +119,15 @@ function frmRegistroRepar(e) {
           });
           frm.reset();
           $("#frmNuevoRe").modal("hidden");
-        }else{
+        } else if (res == "Ya existe el repartidor") {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: res,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        } else {
           Swal.fire({
             position: "top-end",
             icon: "error",
