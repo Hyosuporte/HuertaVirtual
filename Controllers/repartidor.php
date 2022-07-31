@@ -38,13 +38,13 @@ class repartidor extends Controller
         $data = $this->model->getRepartidores();
         for ($i = 0; $i < count($data); $i++) {
             if ($data[$i]['estado'] == 1) {
-                $data[$i]['estado'] = '<span class="badge bg-soft-succes">Activo</span>';
+                $data[$i]['estado'] = '<span class="badge bg-soft-success text-success text-uppercase">Activo</span>';
             } else {
-                $data[$i]['estado'] = '<span class="badge bg-soft-danger">Inactivo</span>';
+                $data[$i]['estado'] = '<span class="badge bg-soft-danger text-danger text-uppercase">Inactivo</span>';
             }
             $data[$i]['acciones'] = '<div>
-                <button class="btn btn-primary" type="button">Editar</button>
-                <button class="btn btn-danger" type="button">Eliminar</button>
+                <button class="btn btn-primary btn-circle .btn-sm" type="button" onclick="btnEditar('.$data[$i]['id']. ');" ><i class="fas fa-pen-fancy"></i></button>
+                <button class="btn btn-danger btn-circle .btn-sm" type="button"><i class="fas fa-trash"></i></button>
             </div>';
         }
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
@@ -77,4 +77,9 @@ class repartidor extends Controller
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
     }
+
+    public function editar(int $id){
+        print_r($id);   
+    }
+
 }

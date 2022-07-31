@@ -1,28 +1,25 @@
 <?php require('Views/Templates/header.php') ?>
-<div class="card-header">
-    <i class="fas fa-table me-1"></i>
-    Repartidores <br>
-    <button type="button" class="btn btn-success mb-2 " onclick="frmNuevoRe()">Nuevo</button>
-    <table class="table table-hover table-dark" id="tblRepartidores">
-        <thead class="thead-light">
-            <tr>
-                <th>ID</th>
-                <th>NOMBRE</th>
-                <th>EMAIL</th>
-                <th>ID VEHICULO</th>
-                <th>ESTADO</th>
-                <th>Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-        </tbody>
-    </table>
-</div>
+<h1 class="h3 mb-0 text-gray-800">Repartidores</h1> <br>
+<button type="button" class="btn btn-success mb-2 " onclick="frmNuevoRe()">Nuevo</button>
+<table class="table table-dark table-striped" id="tblRepartidores">
+    <thead class="thead-dark">
+        <tr>
+            <th>ID</th>
+            <th>NOMBRE</th>
+            <th>EMAIL</th>
+            <th>ID VEHICULO</th>
+            <th>ESTADO</th>
+            <th>Acciones</th>
+        </tr>
+    </thead>
+    <tbody>
+    </tbody>
+</table>
 <div id="NuevoRepartidor" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="my-modal-title" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="my-modal-title">Nuevo Repartidor</h5>
+                <h5 class="modal-title" id="title"></h5>
                 <button class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -86,7 +83,7 @@
                             </div>
                         </div>
                     </div>
-                    <button type="button" class="btn btn-outline-success" onclick="frmRegistroRepar()">Registrar</button>
+                    <button type="button" class="btn btn-outline-success" onclick="frmRegistroRepar()" id="btnAccion"></button>
                 </form>
             </div>
         </div>

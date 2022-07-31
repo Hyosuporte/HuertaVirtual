@@ -61,6 +61,8 @@ function frmLogin(e) {
 }
 
 function frmNuevoRe() {
+  document.getElementById("title").innerHTML = "Nuevo Repartidor";
+  document.getElementById("btnAccion").innerHTML = "Registrar";
   $("#NuevoRepartidor").modal("show");
 }
 
@@ -139,4 +141,19 @@ function frmRegistroRepar(e) {
       }
     };
   }
+}
+
+function btnEditar(id) {
+  document.getElementById("title").innerHTML = "Editar Repartidor";
+  document.getElementById("btnAccion").innerHTML = "Modificar";
+  const url = base_url + "repartidor/editar/"+id;
+  const http = new XMLHttpRequest();
+  http.open("GET", url, true);
+  http.send();
+  http.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      console.log(this.responseText);
+    }
+  };
+  $("#NuevoRepartidor").modal("show");
 }
