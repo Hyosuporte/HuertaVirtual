@@ -14,7 +14,7 @@
 <!-- End of Page Wrapper -->
 
 <!-- Button Para Subir-->
-<a class="scroll-to-top rounded" href="#page-top">
+<a class="scroll-to-top rounded" href="#">
     <i class="fas fa-angle-up"></i>
 </a>
 
@@ -35,7 +35,7 @@
                 <button class="btn btn-secondary" type="button" data-dismiss="modal">
                     Cancelar
                 </button>
-                <a class="btn btn-primary" href="login.html">Cerrar Session</a>
+                <a class="btn btn-primary" href="<?php echo BASE_URL; ?>usuario/salir">Cerrar Session</a>
             </div>
         </div>
     </div>

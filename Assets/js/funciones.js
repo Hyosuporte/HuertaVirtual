@@ -41,7 +41,7 @@ function frmLogin(e) {
     password.classList.add("is-invalid");
     password.focus();
   } else {
-    const url = base_url + "repartidor/valid";
+    const url = base_url + "usuario/validar";
     const frm = document.getElementById("frmLogin");
     const http = new XMLHttpRequest();
     http.open("POST", url, true);
@@ -49,8 +49,12 @@ function frmLogin(e) {
     http.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         const res = JSON.parse(this.responseText);
-        if (res == "correcto") {
+        if (res == "admin") {
+          window.location = base_url + "administrador";
+        }else if(res == "emple"){
           window.location = base_url + "repartidor";
+        } else if (res == "client") {
+          window.location = base_url + "cliente";
         } else {
           document.getElementById("alert").classList.remove("d-none");
           document.getElementById("alert").innerHTML = res;
@@ -63,7 +67,11 @@ function frmLogin(e) {
 function frmNuevoRe() {
   document.getElementById("title").innerHTML = "Nuevo Repartidor";
   document.getElementById("btnAccion").innerHTML = "Registrar";
+  document.getElementById("passwords").classList.remove("d-none");
+  document.getElementById("campoVehi").classList.remove("d-none");
+  document.getElementById("frmNuevoRe").reset();
   $("#NuevoRepartidor").modal("show");
+  document.getElementById("id").value = "";
 }
 
 function frmRegistroRepar(e) {
@@ -79,13 +87,10 @@ function frmRegistroRepar(e) {
   if (
     email.value == "" ||
     nombre.value == "" ||
-    password.value == "" ||
-    passwordConf.value == "" ||
     marca.value == "" ||
     tipoVehiculo.value == "" ||
     modelo.value == "" ||
-    placa.value == "" ||
-    idVehiculo.value == ""
+    placa.value == ""
   ) {
     Swal.fire({
       position: "top-end",
@@ -120,7 +125,8 @@ function frmRegistroRepar(e) {
             timer: 3000,
           });
           frm.reset();
-          $("#frmNuevoRe").modal("hidden");
+          $("#frmNuevoRe").modal("hiden");
+          tblRepartidores.ajax.reload();
         } else if (res == "Ya existe el repartidor") {
           Swal.fire({
             position: "top-end",
@@ -129,6 +135,16 @@ function frmRegistroRepar(e) {
             showConfirmButton: false,
             timer: 3000,
           });
+        } else if (res == "Modificado") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Repartidor Modificado con exito...",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          $("#NuevoRepartidor").modal("hide");
+          tblRepartidores.ajax.reload();
         } else {
           Swal.fire({
             position: "top-end",
@@ -146,14 +162,85 @@ function frmRegistroRepar(e) {
 function btnEditar(id) {
   document.getElementById("title").innerHTML = "Editar Repartidor";
   document.getElementById("btnAccion").innerHTML = "Modificar";
-  const url = base_url + "repartidor/editar/"+id;
+  const url = base_url + "repartidor/editar/" + id;
   const http = new XMLHttpRequest();
   http.open("GET", url, true);
   http.send();
   http.onreadystatechange = function () {
     if (this.readyState == 4 && this.status == 200) {
-      console.log(this.responseText);
+      const res = JSON.parse(this.responseText);
+      document.getElementById("id").value = res.id;
+      document.getElementById("email").value = res.email;
+      document.getElementById("nombre").value = res.nombre;
+      document.getElementById("idVehiculo").value = res.vehiculo_id;
+      document.getElementById("marca").value = res.marca;
+      document.getElementById("modelo").value = res.modelo;
+      document.getElementById("placa").value = res.placa;
+      document.getElementById("vehiculo").value = res.tipo;
+      document.getElementById("campoVehi").classList.add("d-none");
+      document.getElementById("passwords").classList.add("d-none");
+      $("#NuevoRepartidor").modal("show");
     }
   };
-  $("#NuevoRepartidor").modal("show");
+}
+
+function btnInhabilitar(id) {
+  Swal.fire({
+    title: "¿Esta Seguro?",
+    text: "!El repartidor sera inhabilitado!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Inhabilitar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const url = base_url + "repartidor/inhabilitar/" + id;
+      const http = new XMLHttpRequest();
+      http.open("GET", url, true);
+      http.send();
+      http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const res = this.responseText;
+          if (res == "inhabilitado") {
+            Swal.fire("Mensaje!", res, "error");
+            tblRepartidores.ajax.reload();
+          } else {
+            Swal.fire("Mensaje!", "Repartidor inhabilitado.", "success");
+            tblRepartidores.ajax.reload();
+          }
+        }
+      };
+    }
+  });
+}
+
+function btnHabilitar(id) {
+  Swal.fire({
+    title: "¿Esta Seguro?",
+    text: "!El repartidor sera Habilitado!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Habilitar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const url = base_url + "repartidor/habilitar/" + id;
+      const http = new XMLHttpRequest();
+      http.open("GET", url, true);
+      http.send();
+      http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const res = this.responseText;
+          if (res == "inhabilitado") {
+            Swal.fire("Mensaje!", res, "error");
+          } else {
+            Swal.fire("Mensaje!", "Repartidor habilitado.", "success");
+            tblRepartidores.ajax.reload();
+          }
+        }
+      };
+    }
+  });
 }

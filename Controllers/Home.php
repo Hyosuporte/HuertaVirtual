@@ -3,12 +3,20 @@ class Home extends Controller
 {
     public function __construct()
     {
-        parent::__construct();
         session_start();
+        if (!empty($_SESSION['rol'])) {
+            if ($_SESSION['rol'] == 1) {
+                header("location: " . BASE_URL . "administrador");
+            } else if ($_SESSION['rol'] == 2) {
+                header("location: " . BASE_URL . "repartidor");
+            } else {
+                header("location: " . BASE_URL . "cliente");
+            }
+        }
+        parent::__construct();
     }
     public function index()
     {
-        $data['title'] = 'Pagina Principal';
-        $this->views->getView('home', "index", $data);
+        $this->views->getView('home', "index");
     }
 }
