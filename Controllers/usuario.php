@@ -24,13 +24,7 @@ class usuario extends Controller
             $_SESSION['nombre'] = $data['nombre'];
             $_SESSION['usuario'] = $data['email'];
             $_SESSION['rol'] = $data['rol'];
-            if ($data['rol'] == 1) {
-                $msg = "admin";
-            } else if ($data['rol'] == 2) {
-                $msg = "emple";
-            }else{
-                $msg = "client";
-            }
+            $msg = $data['rol'];
         } else {
             $msg = "Usuario o contraseña incorrecta";
         }

@@ -49,11 +49,11 @@ function frmLogin(e) {
     http.onreadystatechange = function () {
       if (this.readyState == 4 && this.status == 200) {
         const res = JSON.parse(this.responseText);
-        if (res == "admin") {
+        if (res == "1") {
           window.location = base_url + "administrador";
-        }else if(res == "emple"){
+        } else if (res == "2") {
           window.location = base_url + "repartidor";
-        } else if (res == "client") {
+        } else if (res == "3") {
           window.location = base_url + "cliente";
         } else {
           document.getElementById("alert").classList.remove("d-none");
