@@ -4,9 +4,6 @@ class repartidor extends Controller
     public function __construct()
     {
         session_start();
-        if (empty($_SESSION['rol'])) {
-            header("location: " . BASE_URL);
-        }
         parent::__construct();
     }
 
@@ -68,7 +65,7 @@ class repartidor extends Controller
                     }
                 }
             } else {
-                $data = $this->model->modificar($email, $nombre, $idVehiculo, $marca, $tipoVehiculo, $modelo, $placa, $id);
+                $data = $this->model->modificarRep($email, $nombre, $idVehiculo, $marca, $tipoVehiculo, $modelo, $placa, $id);
                 if ($data == "Modificado") {
                     $msg = "Modificado";
                 } else {
@@ -82,14 +79,14 @@ class repartidor extends Controller
 
     public function editar(int $id)
     {
-        $data = $this->model->consultar($id);
+        $data = $this->model->consultarRep($id);
         echo json_encode($data, JSON_UNESCAPED_UNICODE);
         die();
     }
 
     public function inhabilitar(int $id)
     {
-        $data = $this->model->inhabilitar($id);
+        $data = $this->model->inhabilitarRep($id);
         if ($data == 1) {
             $msg = "inhabilitado";
         } else {
@@ -101,7 +98,7 @@ class repartidor extends Controller
 
     public function habilitar(int $id)
     {
-        $data = $this->model->habilitar($id);
+        $data = $this->model->habilitarRep($id);
         if ($data == 1) {
             $msg = "habilitado";
         } else {

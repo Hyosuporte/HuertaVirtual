@@ -84,14 +84,14 @@ class repartidorDAO extends Query
         }
     }
 
-    public function consultar(int $id)
+    public function consultarRep(int $id)
     {
         $sql = "select * from repartidores r JOIN vehiculos v ON r.vehiculo_id = v.id WHERE r.id = $id";
         $data = $this->select($sql);
         return $data;
     }
 
-    public function modificar(
+    public function modificarRep(
         string $email,
         string $nombre,
         string $idVehiculo,
@@ -137,7 +137,7 @@ class repartidorDAO extends Query
         }
     }
 
-    public function inhabilitar(int $id)
+    public function inhabilitarRep(int $id)
     {
         $this->id = $id;
         $sql = "update repartidores set estado = 0 where id = ?";
@@ -146,7 +146,7 @@ class repartidorDAO extends Query
         return $data;
     }
 
-    public function habilitar(int $id)
+    public function habilitarRep(int $id)
     {
         $this->id = $id;
         $sql = "update repartidores set estado = 1 where id = ?";

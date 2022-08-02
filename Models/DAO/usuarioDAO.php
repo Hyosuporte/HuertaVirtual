@@ -11,17 +11,16 @@ class usuarioDAO extends Query
     {
         $sql = "select * from clientes where email = '$email' and password = '$password'";
         $data = $this->select($sql);
-        if ($data) {
+        if (!$data) {
             $sql = "select * from repartidores where email = '$email' and password = '$password'";
             $data = $this->select($sql);
             if (!$data) {
                 $sql = "select * from administrador where email = '$email' and password = '$password'";
                 $data = $this->select($sql);
                 return $data;
-            } else {
-                return $data;
             }
             return $data;
         }
+        return $data;
     }
 }

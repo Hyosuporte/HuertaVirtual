@@ -1,4 +1,4 @@
-var tblRepartidores;
+var tblRepartidores, tblProveedores;
 
 document.addEventListener("DOMContentLoaded", function () {
   tblRepartidores = $("#tblRepartidores").DataTable({
@@ -27,42 +27,34 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ],
   });
-});
 
-function frmLogin(e) {
-  const email = document.getElementById("email");
-  const password = document.getElementById("password");
-  if (email.value == "") {
-    password.classList.remove("is-invalid");
-    email.classList.add("is-invalid");
-    email.focus();
-  } else if (password.value == "") {
-    email.classList.remove("is-invalid");
-    password.classList.add("is-invalid");
-    password.focus();
-  } else {
-    const url = base_url + "usuario/validar";
-    const frm = document.getElementById("frmLogin");
-    const http = new XMLHttpRequest();
-    http.open("POST", url, true);
-    http.send(new FormData(frm));
-    http.onreadystatechange = function () {
-      if (this.readyState == 4 && this.status == 200) {
-        const res = JSON.parse(this.responseText);
-        if (res == "1") {
-          window.location = base_url + "administrador";
-        } else if (res == "2") {
-          window.location = base_url + "repartidor";
-        } else if (res == "3") {
-          window.location = base_url + "cliente";
-        } else {
-          document.getElementById("alert").classList.remove("d-none");
-          document.getElementById("alert").innerHTML = res;
-        }
-      }
-    };
-  }
-}
+  tblProveedores = $("#tblProveedores").DataTable({
+    ajax: {
+      url: base_url + "proveedor/listar",
+      dataSrc: "",
+    },
+    columns: [
+      {
+        data: "id",
+      },
+      {
+        data: "nombre",
+      },
+      {
+        data: "email",
+      },
+      {
+        data: "semillas",
+      },
+      {
+        data: "cantidad",
+      },
+      {
+        data: "acciones",
+      },
+    ],
+  });
+});
 
 function frmNuevoRe() {
   document.getElementById("title").innerHTML = "Nuevo Repartidor";
@@ -71,6 +63,14 @@ function frmNuevoRe() {
   document.getElementById("campoVehi").classList.remove("d-none");
   document.getElementById("frmNuevoRe").reset();
   $("#NuevoRepartidor").modal("show");
+  document.getElementById("id").value = "";
+}
+
+function frmNuevoPr() {
+  document.getElementById("title").innerHTML = "Nuevo Proveedor";
+  document.getElementById("btnAccion").innerHTML = "Registrar";
+  document.getElementById("frmNuevoRe").reset();
+  $("#NuevoProveedor").modal("show");
   document.getElementById("id").value = "";
 }
 
@@ -159,6 +159,76 @@ function frmRegistroRepar(e) {
   }
 }
 
+function frmRegistroProv(e) {
+  const email = document.getElementById("email");
+  const nombre = document.getElementById("nombre");
+  const semilla = document.getElementById("semilla");
+  const cantidad = document.getElementById("cantidad");
+  if (
+    email.value == "" ||
+    nombre.value == "" ||
+    semilla.value == "" ||
+    cantidad.value == ""
+  ) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Todos los campos son obligatorios",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  } else {
+    const url = base_url + "repartidor/registrar";
+    const frm = document.getElementById("frmNuevoRe");
+    const http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+    http.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        const res = JSON.parse(this.responseText);
+        if (res == "Registrado") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Repartidor registrado con exito...",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          frm.reset();
+          $("#frmNuevoRe").modal("hiden");
+          tblRepartidores.ajax.reload();
+        } else if (res == "Ya existe el repartidor") {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: res,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        } else if (res == "Modificado") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Repartidor Modificado con exito...",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          $("#NuevoRepartidor").modal("hide");
+          tblRepartidores.ajax.reload();
+        } else {
+          Swal.fire({
+            position: "top-end",
+            icon: "error",
+            title: res,
+            showConfirmButton: false,
+            timer: 3000,
+          });
+        }
+      }
+    };
+  }
+}
+
 function btnEditar(id) {
   document.getElementById("title").innerHTML = "Editar Repartidor";
   document.getElementById("btnAccion").innerHTML = "Modificar";
@@ -180,6 +250,26 @@ function btnEditar(id) {
       document.getElementById("campoVehi").classList.add("d-none");
       document.getElementById("passwords").classList.add("d-none");
       $("#NuevoRepartidor").modal("show");
+    }
+  };
+}
+
+function btnEditarPro(id) {
+  document.getElementById("title").innerHTML = "Editar Proveedor";
+  document.getElementById("btnAccion").innerHTML = "Modificar";
+  const url = base_url + "proveedor/editar/" + id;
+  const http = new XMLHttpRequest();
+  http.open("GET", url, true);
+  http.send();
+  http.onreadystatechange = function () {
+    if (this.readyState == 4 && this.status == 200) {
+      const res = JSON.parse(this.responseText);
+      document.getElementById("id").value = res.id;
+      document.getElementById("email").value = res.email;
+      document.getElementById("nombre").value = res.nombre;
+      document.getElementById("semilla").value = res.semillas;
+      document.getElementById("cantidad").value = res.cantidad;
+      $("#NuevoProveedor").modal("show");
     }
   };
 }
@@ -244,3 +334,5 @@ function btnHabilitar(id) {
     }
   });
 }
+
+function btnEliminarPro(id) {}
