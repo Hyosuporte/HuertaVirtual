@@ -1,4 +1,4 @@
-var tblRepartidores, tblProveedores;
+var tblRepartidores, tblProveedores, tblPlantas;
 
 document.addEventListener("DOMContentLoaded", function () {
   tblRepartidores = $("#tblRepartidores").DataTable({
@@ -54,6 +54,48 @@ document.addEventListener("DOMContentLoaded", function () {
       },
     ],
   });
+
+  tblPlantas = $("#tblPlantas").DataTable({
+    ajax: {
+      url: base_url + "planta/listar",
+      dataSrc: "",
+    },
+    columns: [
+      {
+        data: "id",
+      },
+      {
+        data: "nombre",
+      },
+      {
+        data: "siembra",
+      },
+      {
+        data: "riego",
+      },
+      {
+        data: "sol",
+      },
+      {
+        data: "temperatura",
+      },
+      {
+        data: "cuidados",
+      },
+      {
+        data: "cantidad",
+      },
+      {
+        data: "precio",
+      },
+      {
+        data: "categoria",
+      },
+      {
+        data: "acciones",
+      },
+    ],
+  });
 });
 
 function frmNuevoRe() {
@@ -69,8 +111,16 @@ function frmNuevoRe() {
 function frmNuevoPr() {
   document.getElementById("title").innerHTML = "Nuevo Proveedor";
   document.getElementById("btnAccion").innerHTML = "Registrar";
-  document.getElementById("frmNuevoRe").reset();
+  document.getElementById("frmNuevoPro").reset();
   $("#NuevoProveedor").modal("show");
+  document.getElementById("id").value = "";
+}
+
+function frmNuevaPlan() {
+  document.getElementById("title").innerHTML = "Nueva Planta";
+  document.getElementById("btnAccion").innerHTML = "Registrar";
+  document.getElementById("frmNuevaPlan").reset();
+  $("#NuevaPlanta").modal("show");
   document.getElementById("id").value = "";
 }
 
@@ -125,7 +175,7 @@ function frmRegistroRepar(e) {
             timer: 3000,
           });
           frm.reset();
-          $("#frmNuevoRe").modal("hiden");
+          $("#frmNuevoRe").modal("hidden");
           tblRepartidores.ajax.reload();
         } else if (res == "Ya existe el repartidor") {
           Swal.fire({
@@ -135,6 +185,7 @@ function frmRegistroRepar(e) {
             showConfirmButton: false,
             timer: 3000,
           });
+          tblRepartidores.ajax.reload();
         } else if (res == "Modificado") {
           Swal.fire({
             position: "top-end",
@@ -143,8 +194,8 @@ function frmRegistroRepar(e) {
             showConfirmButton: false,
             timer: 3000,
           });
-          $("#NuevoRepartidor").modal("hide");
           tblRepartidores.ajax.reload();
+          $("#NuevoRepartidor").modal("hide");
         } else {
           Swal.fire({
             position: "top-end",
@@ -178,8 +229,8 @@ function frmRegistroProv(e) {
       timer: 3000,
     });
   } else {
-    const url = base_url + "repartidor/registrar";
-    const frm = document.getElementById("frmNuevoRe");
+    const url = base_url + "proveedor/registrar";
+    const frm = document.getElementById("frmNuevoPro");
     const http = new XMLHttpRequest();
     http.open("POST", url, true);
     http.send(new FormData(frm));
@@ -190,14 +241,24 @@ function frmRegistroProv(e) {
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Repartidor registrado con exito...",
+            title: "Proveedor registrado con exito...",
             showConfirmButton: false,
             timer: 3000,
           });
           frm.reset();
-          $("#frmNuevoRe").modal("hiden");
-          tblRepartidores.ajax.reload();
-        } else if (res == "Ya existe el repartidor") {
+          tblProveedores.ajax.reload();
+          $("#NuevoProveedor").modal("hide");
+        } else if (res == "Modificado") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Proveedor Modificado con exito...",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          tblProveedores.ajax.reload();
+          $("#NuevoProveedor").modal("hide");
+        } else {
           Swal.fire({
             position: "top-end",
             icon: "error",
@@ -205,16 +266,62 @@ function frmRegistroProv(e) {
             showConfirmButton: false,
             timer: 3000,
           });
+        }
+      }
+    };
+  }
+}
+
+function frmRegistroPlan(e) {
+  const nombre = document.getElementById("nombre");
+  const siembra = document.getElementById("siembra");
+  const cantidad = document.getElementById("cantidad");
+  const precio = document.getElementById("precio");
+  const categoria = document.getElementById("categoria");
+  if (
+    nombre.value == "" ||
+    siembra.value == "" ||
+    cantidad.value == "" ||
+    precio.value == "" ||
+    categoria.value == ""
+  ) {
+    Swal.fire({
+      position: "top-end",
+      icon: "error",
+      title: "Todos los campos son obligatorios",
+      showConfirmButton: false,
+      timer: 3000,
+    });
+  } else {
+    const url = base_url + "planta/registrar";
+    const frm = document.getElementById("frmNuevaPlan");
+    const http = new XMLHttpRequest();
+    http.open("POST", url, true);
+    http.send(new FormData(frm));
+    http.onreadystatechange = function () {
+      if (this.readyState == 4 && this.status == 200) {
+        const res = JSON.parse(this.responseText);
+        if (res == "Registrado") {
+          Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: "Planta registrada con exito...",
+            showConfirmButton: false,
+            timer: 3000,
+          });
+          frm.reset();
+          tblPlantas.ajax.reload();
+          $("#NuevaPlanta").modal("hide");
         } else if (res == "Modificado") {
           Swal.fire({
             position: "top-end",
             icon: "success",
-            title: "Repartidor Modificado con exito...",
+            title: "Planta Modificada con exito...",
             showConfirmButton: false,
             timer: 3000,
           });
-          $("#NuevoRepartidor").modal("hide");
-          tblRepartidores.ajax.reload();
+          tblPlantas.ajax.reload();
+          $("#NuevaPlanta").modal("hide");
         } else {
           Swal.fire({
             position: "top-end",
@@ -335,4 +442,33 @@ function btnHabilitar(id) {
   });
 }
 
-function btnEliminarPro(id) {}
+function btnEliminarPro(id) {
+  Swal.fire({
+    title: "¿Esta Seguro?",
+    text: "!El proveedor sera eliminar!",
+    icon: "warning",
+    showCancelButton: true,
+    confirmButtonColor: "#3085d6",
+    cancelButtonColor: "#d33",
+    confirmButtonText: "Si, Eliminar!",
+  }).then((result) => {
+    if (result.isConfirmed) {
+      const url = base_url + "proveedor/eliminar/" + id;
+      const http = new XMLHttpRequest();
+      http.open("GET", url, true);
+      http.send();
+      http.onreadystatechange = function () {
+        if (this.readyState == 4 && this.status == 200) {
+          const res = this.responseText;
+          if (res == "eliminar") {
+            Swal.fire("Mensaje!", res, "error");
+            tblRepartidores.ajax.reload();
+          } else {
+            Swal.fire("Mensaje!", "Proveedor Eliminado.", "success");
+            tblProveedores.ajax.reload();
+          }
+        }
+      };
+    }
+  });
+}

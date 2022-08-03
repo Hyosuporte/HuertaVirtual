@@ -2,7 +2,7 @@
 <div class="d-sm-flex align-items-center justify-content-between mb-4">
     <h1 class="h3 mb-0">Tabla Proveedores</h1>
     <div>
-        <button type="button" class="btn btn-success" onclick="frmNuevoPr()"><i class="fa-solid fa-circle-plus"></i> Nuevo Repartidor</button>
+        <button type="button" class="btn btn-success" onclick="frmNuevoPr()"><i class="fa-solid fa-circle-plus"></i> Nuevo Proveedor</button>
         <button type="button" class="btn btn-primary"><i class="fas fa-download fa-sm"></i> Generar Reporte</button>
     </div>
 </div>
@@ -35,7 +35,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form method="post" id="frmNuevoRe">
+                <form method="post" id="frmNuevoPro">
                     <div class="form-group">
                         <input type="hidden" name="id" id="id">
                         <label for="email">Email</label>

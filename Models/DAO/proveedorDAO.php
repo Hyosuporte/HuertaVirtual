@@ -73,4 +73,14 @@ class proveedorDAO extends Query
             return "error";
         }
     }
+
+    public function eliminarPro(int $id)
+    {
+        $this->id = $id;
+        $sql = "delete from proveedores where id = ?";
+        $datos = array($this->id);
+        $data = $this->save($sql, $datos);
+        return $data;
+    }
+
 }

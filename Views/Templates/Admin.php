@@ -88,7 +88,9 @@
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-2 d-none d-lg-inline  small">
-                                    Poner Nombre Usuario</span>
+                                    <?php
+                                    echo $_SESSION['nombre'];
+                                     ?></span>
                                 <img class="img-profile rounded-circle" src="<?php echo BASE_URL; ?>Assets/img/profile.svg" />
                             </a>
                             <!-- Dropdown - User Information -->

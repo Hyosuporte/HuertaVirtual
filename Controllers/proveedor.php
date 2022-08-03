@@ -57,13 +57,13 @@ class proveedor extends Controller
         die();
     }
 
-    public function inhabilitar(int $id)
+    public function eliminar(int $id)
     {
-        $data = $this->model->inhabilitar($id);
+        $data = $this->model->eliminarPro($id);
         if ($data == 1) {
-            $msg = "inhabilitado";
+            $msg = "eliminar";
         } else {
-            $msg = "Error al inhabilitado el repartidor";
+            $msg = "Error al eliminar el proveedor";
         }
         echo json_encode($msg, JSON_UNESCAPED_UNICODE);
         die();
